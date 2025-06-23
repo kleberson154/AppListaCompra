@@ -38,13 +38,10 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
         val listProducts = db.getProductsAll()
         val listRecycle = mutableListOf<Food>()
-        for (i in 1..sharedPreferences.all.size) {
-            val productName = sharedPreferences.getString("product #$i", null)
-            if (productName != null) {
-                val food = listProducts.find { it.name == productName }
-                if (food != null) {
-                    listRecycle.add(food)
-                }
+        for (i in listProducts.indices) {
+            if (listProducts[i].name in sharedPreferences.all.values) {
+                val food = Food(listProducts[i].name, listProducts[i].price)
+                listRecycle.add(food)
             }
         }
         val qtdText = findViewById<TextView>(R.id.textViewQuantidade)
@@ -53,6 +50,7 @@ class MainActivity : AppCompatActivity() {
 
         val recyclerView = findViewById<RecyclerView>(R.id.RecycleView)
         val total = findViewById<TextView>(R.id.textViewTotal)
+        total.text = String.format(Locale.US,"%.2f", listRecycle.sumOf { it.price })
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = FoodAdapter(this, listRecycle){ position ->
             sharedPreferences.edit().remove("product #${position+1}").apply()
@@ -65,28 +63,26 @@ class MainActivity : AppCompatActivity() {
 
         val inputName = findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView)
         val btnAdd = findViewById<Button>(R.id.buttonAdicionar)
+        val btnLimpar = findViewById<Button>(R.id.buttonLimpar)
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, listProducts.map { it.name })
         inputName.setAdapter(adapter)
 
         btnAdd.setOnClickListener{
-            val name = inputName.text.toString()
-
-            if (name.isNotBlank()) {
-                inputName.setText("")
-                try {
-                    val food = controller.addProduct(this, name)
-                    listRecycle.add(food)
-                    qtdText.text = String.format(Locale.US, "%d produtos", listRecycle.size)
-                    for (i in listRecycle.indices) {
-                        sharedPreferences.edit().putString("product #${i+1}", listRecycle[i].name).apply()
-                    }
-                    recyclerView.adapter?.notifyDataSetChanged()
-                } catch (e: IllegalArgumentException) {
-                    inputName.error = e.message
-                }
+            val name = inputName.text.toString().trim()
+            if (name.isNotEmpty()) {
+                controller.adicionarLista(this, name, listRecycle, sharedPreferences, inputName)
+                recyclerView.adapter?.notifyDataSetChanged()
+            } else {
+                Toast.makeText(this, "Por favor, insira um produto", Toast.LENGTH_SHORT).show()
             }
-            Toast.makeText(this, "Produto adicionado: $name", Toast.LENGTH_SHORT).show()
-            Log.d("MainActivity", "Product added: $listRecycle")
+            qtdText.text = String.format(Locale.US, "%d produtos", listRecycle.size)
+            total.text = String.format(Locale.US,"%.2f", listRecycle.sumOf { it.price })
+        }
+
+        btnLimpar.setOnClickListener {
+            controller.limparLista(this, listRecycle, sharedPreferences, inputName)
+            recyclerView.adapter?.notifyDataSetChanged()
+            qtdText.text = String.format(Locale.US, "%d produtos", listRecycle.size)
             total.text = String.format(Locale.US,"%.2f", listRecycle.sumOf { it.price })
         }
 
