@@ -47,6 +47,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        val qtdText = findViewById<TextView>(R.id.textViewQuantidade)
+        qtdText.text = String.format(Locale.US, "%d produtos", listRecycle.size)
         val controller = MainController()
 
         val recyclerView = findViewById<RecyclerView>(R.id.RecycleView)
@@ -55,6 +57,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = FoodAdapter(this, listRecycle){ position ->
             sharedPreferences.edit().remove("product #${position+1}").apply()
             listRecycle.removeAt(position as Int)
+            qtdText.text = String.format(Locale.US, "%d produtos", listRecycle.size)
 
             recyclerView.adapter?.notifyDataSetChanged()
             total.text = String.format(Locale.US,"%.2f", listRecycle.sumOf { it.price })
@@ -73,6 +76,7 @@ class MainActivity : AppCompatActivity() {
                 try {
                     val food = controller.addProduct(this, name)
                     listRecycle.add(food)
+                    qtdText.text = String.format(Locale.US, "%d produtos", listRecycle.size)
                     for (i in listRecycle.indices) {
                         sharedPreferences.edit().putString("product #${i+1}", listRecycle[i].name).apply()
                     }
