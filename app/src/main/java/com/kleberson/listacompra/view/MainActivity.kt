@@ -35,15 +35,27 @@ class MainActivity : AppCompatActivity() {
 
         val db = Database(this)
         db.onOpen(db.writableDatabase)
+        val sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
         val listProducts = db.getProductsAll()
         val listRecycle = mutableListOf<Food>()
+        for (i in 1..sharedPreferences.all.size) {
+            val productName = sharedPreferences.getString("product #$i", null)
+            if (productName != null) {
+                val food = listProducts.find { it.name == productName }
+                if (food != null) {
+                    listRecycle.add(food)
+                }
+            }
+        }
         val controller = MainController()
 
         val recyclerView = findViewById<RecyclerView>(R.id.RecycleView)
         val total = findViewById<TextView>(R.id.textViewTotal)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = FoodAdapter(this, listRecycle){ position ->
+            sharedPreferences.edit().remove("product #${position+1}").apply()
             listRecycle.removeAt(position as Int)
+
             recyclerView.adapter?.notifyDataSetChanged()
             total.text = String.format(Locale.US,"%.2f", listRecycle.sumOf { it.price })
         }
@@ -53,8 +65,6 @@ class MainActivity : AppCompatActivity() {
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, listProducts.map { it.name })
         inputName.setAdapter(adapter)
 
-
-
         btnAdd.setOnClickListener{
             val name = inputName.text.toString()
 
@@ -63,6 +73,9 @@ class MainActivity : AppCompatActivity() {
                 try {
                     val food = controller.addProduct(this, name)
                     listRecycle.add(food)
+                    for (i in listRecycle.indices) {
+                        sharedPreferences.edit().putString("product #${i+1}", listRecycle[i].name).apply()
+                    }
                     recyclerView.adapter?.notifyDataSetChanged()
                 } catch (e: IllegalArgumentException) {
                     inputName.error = e.message
