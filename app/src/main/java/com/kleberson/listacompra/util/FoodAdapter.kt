@@ -2,8 +2,8 @@ package com.kleberson.listacompra.util
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View.OnLongClickListener
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.kleberson.listacompra.R
 import com.kleberson.listacompra.model.Food
@@ -25,6 +25,7 @@ class FoodAdapter(val context: Context, val foods: List<Food>,val onLongClickLis
 
         holder.itemView.setOnLongClickListener {
             onLongClickListener(position)
+            Toast.makeText(context, "Produto removido", Toast.LENGTH_SHORT).show()
             true
         }
     }
