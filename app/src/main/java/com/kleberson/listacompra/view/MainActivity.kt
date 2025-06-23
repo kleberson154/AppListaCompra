@@ -6,9 +6,8 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
-import android.widget.EditText
-import android.widget.MultiAutoCompleteTextView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -41,16 +40,20 @@ class MainActivity : AppCompatActivity() {
         val controller = MainController()
 
         val recyclerView = findViewById<RecyclerView>(R.id.RecycleView)
+        val total = findViewById<TextView>(R.id.textViewTotal)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val foodAdapter = FoodAdapter(listRecycle)
-        recyclerView.adapter = foodAdapter
+        recyclerView.adapter = FoodAdapter(this, listRecycle){ position ->
+            listRecycle.removeAt(position as Int)
+            recyclerView.adapter?.notifyDataSetChanged()
+            total.text = String.format(Locale.US,"%.2f", listRecycle.sumOf { it.price })
+        }
 
         val inputName = findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView)
         val btnAdd = findViewById<Button>(R.id.buttonAdicionar)
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, listProducts.map { it.name })
         inputName.setAdapter(adapter)
 
-        val total = findViewById<TextView>(R.id.textViewTotal)
+
 
         btnAdd.setOnClickListener{
             val name = inputName.text.toString()
@@ -65,6 +68,7 @@ class MainActivity : AppCompatActivity() {
                     inputName.error = e.message
                 }
             }
+            Toast.makeText(this, "Produto adicionado: $name", Toast.LENGTH_SHORT).show()
             Log.d("MainActivity", "Product added: $listRecycle")
             total.text = String.format(Locale.US,"%.2f", listRecycle.sumOf { it.price })
         }
