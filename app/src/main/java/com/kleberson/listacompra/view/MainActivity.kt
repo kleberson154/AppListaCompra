@@ -1,6 +1,7 @@
 package com.kleberson.listacompra.view
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
@@ -64,6 +65,7 @@ class MainActivity : AppCompatActivity() {
         val inputName = findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView)
         val btnAdd = findViewById<Button>(R.id.buttonAdicionar)
         val btnLimpar = findViewById<Button>(R.id.buttonLimpar)
+        val btnCreateMain = findViewById<Button>(R.id.buttonCriarMain)
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, listProducts.map { it.name })
         inputName.setAdapter(adapter)
 
@@ -84,6 +86,12 @@ class MainActivity : AppCompatActivity() {
             recyclerView.adapter?.notifyDataSetChanged()
             qtdText.text = String.format(Locale.US, "%d produtos", listRecycle.size)
             total.text = String.format(Locale.US,"%.2f", listRecycle.sumOf { it.price })
+        }
+
+        btnCreateMain.setOnClickListener {
+            Intent(this, NewProductActivity::class.java).apply {
+                startActivity(this)
+            }
         }
 
     }

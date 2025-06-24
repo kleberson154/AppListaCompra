@@ -12,13 +12,13 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="24dp"
         android:text="Shopping List"
         android:textColor="@color/design_default_color_on_secondary"
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.159"
+        app:layout_constraintHorizontal_bias="0.134"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,8 +35,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RecycleView"
-        android:layout_width="339dp"
-        android:layout_height="475dp"
+        android:layout_width="331dp"
+        android:layout_height="395dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.444"
@@ -73,7 +73,7 @@
         android:id="@+id/autoCompleteTextView"
         android:layout_width="215dp"
         android:layout_height="46dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="12dp"
         android:backgroundTint="@color/design_default_color_on_secondary"
         android:ems="10"
         android:hint="Name"
@@ -81,9 +81,9 @@
         android:textColor="@color/design_default_color_on_secondary"
         android:textColorHint="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.159"
+        app:layout_constraintHorizontal_bias="0.137"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonCriarMain" />
 
     <Button
         android:id="@+id/buttonLimpar"
@@ -114,5 +114,17 @@
         android:text="TextView"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView3"
         app:layout_constraintStart_toEndOf="@+id/textView3" />
+
+    <Button
+        android:id="@+id/buttonCriarMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/bg"
+        android:text="Criar produto"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.096"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

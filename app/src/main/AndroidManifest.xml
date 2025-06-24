@@ -22,6 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.MainActivity" android:exported="true"/>
+        <activity android:name=".view.NewProductActivity" android:exported="true"/>
 
     </application>
 

@@ -3,6 +3,7 @@ package com.kleberson.listacompra.database
 import android.annotation.SuppressLint
 import android.content.Context
 import android.database.sqlite.SQLiteOpenHelper
+import com.kleberson.listacompra.exception.ProductExistException
 import com.kleberson.listacompra.model.Food
 
 class Database(context: Context): SQLiteOpenHelper(
@@ -43,5 +44,11 @@ class Database(context: Context): SQLiteOpenHelper(
         }
         cursor.close()
         return products
+    }
+
+    fun createProduct(name: String, price: Double) {
+        val db = writableDatabase
+        db.execSQL("INSERT INTO produtos (nome, preco) VALUES (?, ?)", arrayOf(name, price))
+        db.close()
     }
 }
