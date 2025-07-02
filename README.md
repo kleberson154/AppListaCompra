@@ -1,5 +1,10 @@
-Video de apresentacao: 
-[video_listaCompra.webm](https://github.com/user-attachments/assets/d2f6c0b8-baf0-43eb-b7b7-342a2c89532d)
+# App Lista Compra
+
+## Video de apresentacao
+
+https://github.com/user-attachments/assets/c5564a81-5f42-40c0-a27d-7bac5ad8bc2a
+
+## Telas do App
 
 ![Captura de tela 2025-06-26 150945](https://github.com/user-attachments/assets/8481a01d-cb27-4bf5-bd82-768d635d3ed2)
 ![Captura de tela 2025-06-26 151001](https://github.com/user-attachments/assets/81b77563-b522-4712-b886-2f078d26b0e2)
